@@ -1,3 +1,4 @@
+-Added image loader
 -Added changelog
 -Init DVC
 -Updated README.md

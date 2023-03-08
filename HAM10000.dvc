@@ -1,0 +1,6 @@
+wdir: data/01_raw
+outs:
+- md5: 44986da38a8eceba5615a7f083263745.dir
+  size: 2770741324
+  nfiles: 10016
+  path: HAM10000

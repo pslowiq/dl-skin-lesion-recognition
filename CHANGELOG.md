@@ -1,5 +1,5 @@
--Adding changelog
--init DVC
--Update README.md
--first commit
+-Added changelog
+-Init DVC
+-Updated README.md
+-First commit
 -Initial commit

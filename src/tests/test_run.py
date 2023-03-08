@@ -17,6 +17,8 @@ from kedro.config import ConfigLoader
 from kedro.framework.context import KedroContext
 from kedro.framework.hooks import _create_hook_manager
 
+from dvc.api import DVCFileSystem
+import numpy as np
 
 @pytest.fixture
 def config_loader():
@@ -36,6 +38,16 @@ def project_context(config_loader):
 # The tests below are here for the demonstration purpose
 # and should be replaced with the ones testing the project
 # functionality
+
+
+
 class TestProjectContext:
     def test_project_path(self, project_context):
         assert project_context.project_path == Path.cwd()
+    def test_image_load(self, config_loader):
+        from dl_skin_lesions.pipelines.data_loader.nodes import load_image_from_fs
+        params = config_loader['parameters']
+        fs = DVCFileSystem(url = params['repo_url'], rev = 'main')
+        img = load_image_from_fs([x['name'] for x in fs.listdir('/data/01_raw/HAM10000/HAM10000_images')][0], fs)
+
+        assert type(img) == np.ndarray

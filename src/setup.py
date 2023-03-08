@@ -4,7 +4,7 @@ entry_point = (
     "dl-skin-lesions = dl_skin_lesions.__main__:main"
 )
 
-#asd
+
 # get the dependencies and installs
 with open("requirements.txt", encoding="utf-8") as f:
     # Make sure we strip all comments and options (e.g "--extra-index-url")

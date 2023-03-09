@@ -10,3 +10,7 @@ Download repository, install dependencies from requirements.txt and then type in
 dvc install
 dvc pull
 ```
+Check whether data is downloaded properly:
+```
+pytest
+```

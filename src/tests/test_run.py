@@ -48,6 +48,6 @@ class TestProjectContext:
         from dl_skin_lesions.pipelines.data_loader.nodes import load_image_from_fs
         params = config_loader['parameters']
         fs = DVCFileSystem(url = params['repo_url'], rev = 'main')
-        img = load_image_from_fs([x['name'] for x in fs.listdir('/data/01_raw/HAM10000/HAM10000_images')][0], fs)
+        img = load_image_from_fs(params['sample_img'], fs)
 
         assert type(img) == np.ndarray

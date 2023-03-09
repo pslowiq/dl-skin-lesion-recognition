@@ -19,7 +19,7 @@ def load_image_from_fs(path : str, fs : DVCFileSystem) -> np.array:
     img_np = cv2.imdecode(nparr, cv2.IMREAD_UNCHANGED)
     return img_np
 
-def load_image_from_fsstr(path : str, fs_url : DVCFileSystem) -> np.array:
+def load_image_from_fsstr(path : str, fs_url : str) -> np.array:
     fs = fs = DVCFileSystem(url = fs_url, rev = 'main')
     image_bytes = fs.open(path).read()
     nparr = np.frombuffer(image_bytes, np.uint8)

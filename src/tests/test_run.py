@@ -44,10 +44,3 @@ def project_context(config_loader):
 class TestProjectContext:
     def test_project_path(self, project_context):
         assert project_context.project_path == Path.cwd()
-    def test_image_load(self, config_loader):
-        from dl_skin_lesions.pipelines.data_loader.nodes import load_image_from_fs
-        params = config_loader['parameters']
-        fs = DVCFileSystem(url = params['repo_url'], rev = 'main')
-        img = load_image_from_fs(params['sample_img'], fs)
-
-        assert type(img) == np.ndarray

@@ -9,10 +9,13 @@ jupyter~=1.0
 jupyterlab_server>=2.11.1, <2.16.0
 jupyterlab~=3.0, <3.6.0
 kedro~=0.18.5
+kedro-datasets[pillow.ImageDataSet]>=1.0
 kedro-telemetry~=0.2.0
 nbstripout~=0.4
 numpy==1.23.4
+pandas>=1.5
 pytest-cov~=3.0
 pytest-mock>=1.7.1, <2.0
 pytest~=7.2
+pytorch-lightning==1.9.4
 torchvision==0.14.1

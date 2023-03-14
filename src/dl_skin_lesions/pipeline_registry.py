@@ -13,5 +13,4 @@ def register_pipelines() -> Dict[str, Pipeline]:
     """
     pipelines = find_pipelines()
     pipelines["__default__"] = sum(pipelines.values())
-    print(pipelines.keys())
     return pipelines

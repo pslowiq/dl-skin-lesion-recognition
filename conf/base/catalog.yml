@@ -2,3 +2,29 @@
 #
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://kedro.readthedocs.io/en/stable/data/data_catalog.html
+
+HAM10000:
+  type: PartitionedDataSet
+  dataset: kedro.extras.datasets.pillow.ImageDataSet
+  path: data/01_raw/HAM10000/HAM10000_images
+  filename_suffix: ".jpg"
+
+HAM10000_metadata:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/HAM10000/HAM10000_metadata.csv
+
+HAM10000_np:
+  type: pickle.PickleDataSet
+  filepath: data/02_intermediate/HAM10000/HAM10000_np.pkl
+
+HAM10000_metadata_with_categories:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/HAM10000/HAM10000_metadata_with_categories.csv
+
+lightning_model:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/basic_model.pkl
+
+trained_model:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/trained_basic_model.pkl

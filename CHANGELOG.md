@@ -1,3 +1,5 @@
+-Added training process
+-Added simple CNN model creation
 -Added image loader
 -Added changelog
 -Init DVC

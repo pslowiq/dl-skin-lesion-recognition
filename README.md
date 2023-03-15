@@ -4,13 +4,25 @@
 ## Description: Skin lesion recognition using CNN 
 ### Dataset : HAM10000 - https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DBW86T
 
-### Download data
-Download repository, install dependencies from requirements.txt and then type in terminal:
+### Download data, run the project
+Download repository, create venv, install dependencies from requirements.txt and then type in terminal:
 ```
-dvc install
 dvc pull
+kedro run
 ```
-Check whether data is downloaded properly:
+
+### Run specific pipelines
+#### Convert images to numpy and make train/test datasets
 ```
-pytest
+kedro run --pipeline='data_loader'
+```
+
+#### Create simple model - CNN with 1-dense layer
+```
+kedro run --pipeline='model_create'
+```
+
+#### Train model
+```
+kedro run --pipeline='model_train'
 ```

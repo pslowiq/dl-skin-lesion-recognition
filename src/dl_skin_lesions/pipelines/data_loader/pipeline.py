@@ -9,6 +9,7 @@ def create_pipeline(**kwargs) -> Pipeline:
 
     return pipeline(
         [
-        node(func = load_data_to_np, inputs = ["HAM10000", "HAM10000_metadata"], outputs = ["HAM10000_np", "HAM10000_metadata_with_categories"])
+        node(func = load_data_to_np, inputs = ["HAM10000", "HAM10000_metadata"], outputs = ["HAM10000_np", "HAM10000_metadata_with_categories"]),
+        node(func = split_data, inputs = "HAM10000_np", outputs = ["HAM10000_train", "HAM10000_test"])
         ]
     )

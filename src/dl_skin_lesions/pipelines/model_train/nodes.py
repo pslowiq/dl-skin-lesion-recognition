@@ -9,9 +9,10 @@ import numpy as np
 import pandas as pd
 import torch
 from torch import nn
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 import torch.nn.functional as F
-import pytorch_lightning as pl
+import lightning as pl
+from lightning.pytorch import loggers as pl_loggers
 
 from kedro.framework.project import settings
 from kedro.config import ConfigLoader
@@ -19,28 +20,12 @@ cfg = ConfigLoader(conf_source=str(Path.cwd() / settings.CONF_SOURCE))
 params = cfg['parameters']
 
 
-
-class CustomIterable(Dataset):
-
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __len__(self):
-        return self.x.shape[0]
-    
-    def __getitem__(self, idx):
-        img, label = self.x[idx], self.y[idx]
-        img_tensor = torch.tensor(img, dtype=torch.float32) / 255
-        img_tensor = img_tensor.permute(2, 0, 1)
-        label = torch.tensor(label, dtype=torch.int64)
-        return img_tensor, label
-    
 def train_model(model, dataset):
-    x, y = dataset
-    data_loader = DataLoader(CustomIterable(x, y), batch_size=32)
 
-    x = torch.tensor(x, dtype=torch.float32)
-    t = pl.Trainer(max_epochs=params['epochs'])
+    data_loader = DataLoader(dataset, batch_size=params['batch_size'], num_workers=12)
+    tb_logger = pl_loggers.CSVLogger(save_dir = Path.cwd() / "logs/")
+
+    t = pl.Trainer(max_epochs=params['epochs'], logger=tb_logger)
     t.fit(model=model, train_dataloaders=data_loader)
+    
     return model

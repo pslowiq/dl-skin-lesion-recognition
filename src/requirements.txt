@@ -5,6 +5,8 @@ flake8>=3.7.9, <5.0
 ipython>=7.31.1, <8.0; python_version < '3.8'
 ipython~=8.10; python_version >= '3.9'
 isort~=5.0
+lightning==2.0.0
+lightning[extra]==2.0.0
 jupyter~=1.0
 jupyterlab_server>=2.11.1, <2.16.0
 jupyterlab~=3.0, <3.6.0
@@ -17,5 +19,4 @@ pandas>=1.5
 pytest-cov~=3.0
 pytest-mock>=1.7.1, <2.0
 pytest~=7.2
-pytorch-lightning==1.9.4
 torchvision==0.14.1

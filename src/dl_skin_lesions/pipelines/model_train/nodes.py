@@ -20,12 +20,13 @@ cfg = ConfigLoader(conf_source=str(Path.cwd() / settings.CONF_SOURCE))
 params = cfg['parameters']
 
 
-def train_model(model, dataset):
+def train_model(model, train_dataset, test_dataset):
 
-    data_loader = DataLoader(dataset, batch_size=params['batch_size'], num_workers=12)
+    train_data_loader = DataLoader(train_dataset, batch_size=params['batch_size'], num_workers=12)
+    test_data_loader = DataLoader(test_dataset, batch_size=params['batch_size'], num_workers=12)
     tb_logger = pl_loggers.CSVLogger(save_dir = Path.cwd() / "logs/")
 
     t = pl.Trainer(max_epochs=params['epochs'], logger=tb_logger)
-    t.fit(model=model, train_dataloaders=data_loader)
+    t.fit(model=model, train_dataloaders=train_data_loader, val_dataloaders=test_data_loader)
     
     return model

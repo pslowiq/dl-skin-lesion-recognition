@@ -24,26 +24,37 @@ class BasicCNN(pl.LightningModule):
         image_shape = params['image_size']
 
         super().__init__()
-        self.train_acc = torchmetrics.Accuracy(task="multiclass", num_classes=7)
+        self.multiclass_accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=7)
         self.cnn1 = nn.Conv2d(3, channels_out, kernel_size)
-        self.dense1 = nn.Linear((image_shape[0] - kernel_size+1) * (image_shape[1] - kernel_size+1) * channels_out, 7)
+        self.dense1 = nn.Linear((image_shape[0] - kernel_size+1) * (image_shape[1] - kernel_size+1), 7)
 
     def training_step(self, batch, batch_idx):
         x, y = batch
         x = self.forward(x)
         loss = nn.CrossEntropyLoss()(x,y)
         
-        self.log('train acc', self.train_acc(x, y))
-        self.log('train loss', loss)
+        self.log('train acc', self.multiclass_accuracy(x, y), on_step = False, on_epoch = True)
+        self.log('train loss', loss, on_step = False, on_epoch = True)
+
+        return loss
+    
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        x = self.forward(x)
+        loss = nn.CrossEntropyLoss()(x,y)
+        
+        self.log('validation acc', self.multiclass_accuracy(x, y), on_step = False, on_epoch = True)
+        self.log('validation loss', loss, on_step = False, on_epoch = True)
 
         return loss
     
     def forward(self, x):
         x = self.cnn1(x)
+        x = x.mean(dim = 1)
         x = nn.ReLU()(x)
         x = nn.Flatten()(x)
         x = self.dense1(x)
-        x = nn.Softmax(dim = -1)(x)
+        #x = nn.Softmax(dim = -1)(x)
         return x
 
 

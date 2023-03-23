@@ -32,18 +32,20 @@ class CustomIterable(Dataset):
         label = torch.tensor(label, dtype=torch.int64)
         return img_tensor, label
 
-def load_data_to_np(images : PartitionedDataSet, csv : pd.DataFrame):
+def load_data_to_np(images : PartitionedDataSet, csv : pd.DataFrame, loader_params):
 
+    image_size = loader_params['image_size']
     csv['label'] = pd.Categorical(csv['dx']).codes
 
-    x = np.stack([data_fun().resize(cfg['parameters']['image_size']) for id, data_fun in images.items()])
+    x = np.stack([data_fun().resize(image_size) for id, data_fun in images.items()])
     y = np.stack([csv[csv['image_id'] == id]['label'].values[0] for id, data_fun in images.items()])
 
     return (x, y), csv
 
-def split_data(dataset : Tuple[np.array, np.array]):
+def split_data(dataset : Tuple[np.array, np.array], loader_params):
+    train_test_split = loader_params['train_test_split']
 
     x, y = dataset
     dataset = CustomIterable(x, y)
-    train_dataset, test_dataset = random_split(dataset, params['train_test_split'], generator=torch.Generator().manual_seed(42))
+    train_dataset, test_dataset = random_split(dataset, train_test_split, generator=torch.Generator().manual_seed(42))
     return train_dataset, test_dataset

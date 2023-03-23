@@ -8,5 +8,5 @@ from .nodes import *
 
 def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
-        node(func = create_model, inputs = None, outputs = 'lightning_model')
+        node(func = create_model, inputs = ['params:create_params', 'params:loader_params'], outputs = 'lightning_model')
     ])

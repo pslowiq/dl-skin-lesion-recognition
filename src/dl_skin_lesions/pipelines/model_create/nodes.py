@@ -13,20 +13,14 @@ import lightning as pl
 
 import torchmetrics
 
-from kedro.framework.project import settings
-from kedro.config import ConfigLoader
-
-cfg = ConfigLoader(conf_source=str(Path.cwd() / settings.CONF_SOURCE))
-params = cfg['parameters']
-
 class BasicCNN(pl.LightningModule):
-    def __init__(self, channels_out, kernel_size):
-        image_shape = params['image_size']
+    def __init__(self, channels_out, kernel_size, image_shape, num_classes, learning_rate):
 
+        self.learning_rate = learning_rate
         super().__init__()
-        self.multiclass_accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=7)
+        self.multiclass_accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=num_classes)
         self.cnn1 = nn.Conv2d(3, channels_out, kernel_size)
-        self.dense1 = nn.Linear((image_shape[0] - kernel_size+1) * (image_shape[1] - kernel_size+1), 7)
+        self.dense1 = nn.Linear((image_shape[0] - kernel_size+1) * (image_shape[1] - kernel_size+1), num_classes)
 
     def training_step(self, batch, batch_idx):
         x, y = batch
@@ -59,12 +53,13 @@ class BasicCNN(pl.LightningModule):
 
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=params['learning_rate'])
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         return optimizer
 
 
-def create_model():
-    return BasicCNN(params['channels_out'], params['kernel_size'])
+def create_model(create_params, loader_params):
+    return BasicCNN(create_params['channels_out'], create_params['kernel_size'], loader_params['image_size']
+                    , loader_params['num_classes'], create_params['learning_rate'])
 
 
 

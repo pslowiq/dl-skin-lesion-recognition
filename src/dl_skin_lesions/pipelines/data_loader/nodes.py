@@ -32,13 +32,14 @@ class CustomIterable(Dataset):
         label = torch.tensor(label, dtype=torch.int64)
         return img_tensor, label
 
+# different name because of csv
 def load_data_to_np(images : PartitionedDataSet, csv : pd.DataFrame, loader_params):
 
     image_size = loader_params['image_size']
     csv['label'] = pd.Categorical(csv['dx']).codes
 
-    x = np.stack([data_fun().resize(image_size) for id, data_fun in images.items()])
-    y = np.stack([csv[csv['image_id'] == id]['label'].values[0] for id, data_fun in images.items()])
+    x = np.stack([data_fun().resize(image_size) for _, data_fun in images.items()])
+    y = np.stack([csv[csv['image_id'] == id]['label'].values[0] for id, _ in images.items()])
 
     return (x, y), csv
 

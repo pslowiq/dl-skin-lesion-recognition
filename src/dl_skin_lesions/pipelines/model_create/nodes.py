@@ -2,23 +2,18 @@
 This is a boilerplate pipeline 'model_create'
 generated using Kedro 0.18.6
 """
-from pathlib import Path
-import numpy as np
-import pandas as pd
-import torch
+
 from torch import nn
-from torch.utils.data import DataLoader, Dataset
-import torch.nn.functional as F
-import lightning as pl
+from torch.optim import Adam
+from lightning import LightningModule
+from torchmetrics import Accuracy
 
-import torchmetrics
-
-class BasicCNN(pl.LightningModule):
+class BasicCNN(LightningModule):
     def __init__(self, channels_out, kernel_size, image_shape, num_classes, learning_rate):
 
         self.learning_rate = learning_rate
         super().__init__()
-        self.multiclass_accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=num_classes)
+        self.multiclass_accuracy = Accuracy(task="multiclass", num_classes=num_classes)
         self.cnn1 = nn.Conv2d(3, channels_out, kernel_size)
         self.dense1 = nn.Linear((image_shape[0] - kernel_size+1) * (image_shape[1] - kernel_size+1), num_classes)
 
@@ -53,7 +48,7 @@ class BasicCNN(pl.LightningModule):
 
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        optimizer = Adam(self.parameters(), lr=self.learning_rate)
         return optimizer
 
 

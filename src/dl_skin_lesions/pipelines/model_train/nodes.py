@@ -10,7 +10,9 @@ from lightning import Trainer
 from lightning.pytorch import loggers as pl_loggers
 
 
-def train_model(model, train_params, train_dataset, test_dataset):
+def train_model(model, model_params, train_dataset, test_dataset):
+
+    train_params = model_params['training_params']
 
     train_data_loader = DataLoader(train_dataset, batch_size = train_params['batch_size'], num_workers=12)
     test_data_loader = DataLoader(test_dataset, batch_size = train_params['batch_size'], num_workers=12)

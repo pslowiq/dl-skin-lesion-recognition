@@ -37,6 +37,5 @@ def split_data(dataset : ImageDataset, loader_params):
     train_dataset, test_dataset = random_split(dataset, train_test_split, generator=torch.Generator().manual_seed(42))
 
     train_weights = calculate_train_weights(train_dataset, loader_params['num_classes'])
-    print(train_weights)
 
     return train_dataset, train_weights, test_dataset

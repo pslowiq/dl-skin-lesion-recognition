@@ -59,7 +59,9 @@ class BasicCNN(LightningModule):
         return optimizer
 
 
-def create_model(create_params, loader_params, train_weights):
+def create_model(model_params, loader_params, train_weights):
+    create_params = model_params['create_params']
+
     return BasicCNN(create_params['channels_out'], create_params['kernel_size'], loader_params['image_size']
                     , loader_params['num_classes'], create_params['learning_rate'], train_weights)
 

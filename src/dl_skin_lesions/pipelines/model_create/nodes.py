@@ -18,6 +18,7 @@ class BasicCNN(LightningModule):
         self.cnn1 = nn.Conv2d(3, channels_out, kernel_size)
         self.dense1 = nn.Linear((image_shape[0] - kernel_size+1) * (image_shape[1] - kernel_size+1), num_classes)
         self.class_weights = training_weights
+        self.save_hyperparameters()
 
     def training_step(self, batch, batch_idx):
         x, y = batch

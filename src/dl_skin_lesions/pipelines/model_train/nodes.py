@@ -6,7 +6,7 @@ generated using Kedro 0.18.6
 
 from pathlib import Path
 from torch.utils.data import DataLoader
-import lightning as pl
+from lightning import Trainer
 from lightning.pytorch import loggers as pl_loggers
 
 
@@ -20,7 +20,7 @@ def train_model(model, train_params, train_dataset, test_dataset):
 
     print(f'EPOCHS: {train_params["epochs"]}')
 
-    t = pl.Trainer(max_epochs=train_params['epochs'], logger=wandb_logger)
+    t = Trainer(max_epochs=train_params['epochs'], logger=wandb_logger)
     t.fit(model=model, train_dataloaders=train_data_loader, val_dataloaders=test_data_loader)
     
     return model

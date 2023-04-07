@@ -8,5 +8,5 @@ from .nodes import *
 
 def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
-        node(func = train_model, inputs = ['lightning_model', 'params:model', 'dataset_train', 'dataset_test'], outputs = 'trained_model')
+        node(func = train_model, inputs = ['lightning_model', 'params:model', 'train_dataset', 'test_dataset'], outputs = 'trained_model')
     ])

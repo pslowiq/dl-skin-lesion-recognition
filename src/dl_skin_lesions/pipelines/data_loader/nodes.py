@@ -10,43 +10,33 @@ import pandas as pd
 from kedro.framework.project import settings
 from kedro.config import ConfigLoader
 from kedro.io import PartitionedDataSet
+from dl_skin_lesions.extras.datasets.image_dataset import ImageDataset
 import torch
 from torch.utils.data import random_split, Dataset
 
-cfg = ConfigLoader(conf_source=str(Path.cwd() / settings.CONF_SOURCE))
-params = cfg['parameters']
+def calculate_train_weights(dataset, num_classes):
 
-class CustomIterable(Dataset):
+    train_weights = {i : 0 for i in range(num_classes)}
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    for _ , label in dataset:
+        train_weights[label] += 1
 
-    def __len__(self):
-        return self.x.shape[0]
-    
-    def __getitem__(self, idx):
-        img, label = self.x[idx], self.y[idx]
-        img_tensor = torch.tensor(img, dtype=torch.float32) / 255
-        img_tensor = img_tensor.permute(2, 0, 1)
-        label = torch.tensor(label, dtype=torch.int64)
-        return img_tensor, label
+    for label in train_weights.keys():
+        train_weights[label] = 1. - train_weights[label]/len(dataset)
 
-# different name because of csv
-def load_data_to_np(images : PartitionedDataSet, csv : pd.DataFrame, loader_params):
+    return [train_weights[i] for i in range(num_classes)]
 
-    image_size = loader_params['image_size']
-    csv['label'] = pd.Categorical(csv['dx']).codes
+def create_torch_dataset(images : PartitionedDataSet, csv : pd.DataFrame, loader_params):
+    dataset = ImageDataset(images, csv, image_size = loader_params['image_size'])
 
-    x = np.stack([data_fun().resize(image_size) for _, data_fun in images.items()])
-    y = np.stack([csv[csv['image_id'] == id]['label'].values[0] for id, _ in images.items()])
+    return dataset
 
-    return (x, y), csv
+def split_data(dataset : ImageDataset, loader_params):
 
-def split_data(dataset : Tuple[np.array, np.array], loader_params):
     train_test_split = loader_params['train_test_split']
-
-    x, y = dataset
-    dataset = CustomIterable(x, y)
     train_dataset, test_dataset = random_split(dataset, train_test_split, generator=torch.Generator().manual_seed(42))
-    return train_dataset, test_dataset
+
+    train_weights = calculate_train_weights(train_dataset, loader_params['num_classes'])
+    print(train_weights)
+
+    return train_dataset, train_weights, test_dataset

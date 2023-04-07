@@ -13,21 +13,21 @@ HAM10000_metadata:
   type: pandas.CSVDataSet
   filepath: data/01_raw/HAM10000/HAM10000_metadata.csv
 
-HAM10000_np:
+dataset:
   type: pickle.PickleDataSet
-  filepath: data/02_intermediate/HAM10000/HAM10000_np.pkl
+  filepath: data/03_primary/HAM10000/HAM10000_dataset.pkl
 
-HAM10000_metadata_with_categories:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/HAM10000/HAM10000_metadata_with_categories.csv
-
-HAM10000_train:
+train_dataset:
   type: pickle.PickleDataSet
-  filepath: data/05_model_input/HAM10000/HAM10000_train.pkl
+  filepath: data/03_primary/HAM10000/HAM10000_train.pkl
 
-HAM10000_test:
+test_dataset:
   type: pickle.PickleDataSet
-  filepath: data/05_model_input/HAM10000/HAM10000_test.pkl
+  filepath: data/03_primary/HAM10000/HAM10000_test.pkl
+
+train_weights:
+  type: pickle.PickleDataSet
+  filepath: data/03_primary/HAM10000/train_weights.pkl
 
 lightning_model:
   type: pickle.PickleDataSet

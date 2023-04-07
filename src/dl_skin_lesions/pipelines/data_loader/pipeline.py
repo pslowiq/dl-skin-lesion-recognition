@@ -9,7 +9,7 @@ def create_pipeline(**kwargs) -> Pipeline:
 
     return pipeline(
         [
-        node(func = load_data_to_np, inputs = ["HAM10000", "HAM10000_metadata","params:loader_params"], outputs = ["dataset_np", "dataset_metadata_with_categories"]),
-        node(func = split_data, inputs = ["dataset_np","params:loader_params"], outputs = ["dataset_train", "dataset_test"])
+        node(func = create_torch_dataset, inputs = ["HAM10000", "HAM10000_metadata", "params:loader_params"], outputs = "dataset"),
+        node(func = split_data, inputs = ["dataset","params:loader_params"], outputs = ["train_dataset", "train_weights", "test_dataset"])
         ]
     )

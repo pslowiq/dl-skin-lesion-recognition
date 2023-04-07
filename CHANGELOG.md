@@ -1,4 +1,5 @@
 ```
+-Added wandb visualisation
 -Added training process
 -Added simple CNN model creation
 -Added image loader, custom dataset and data split

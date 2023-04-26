@@ -7,13 +7,14 @@
 basic_cnn:
 
   create_params:
-    learning_rate: 0.001
+    learning_rate: 0.00001
 
     # CNN params
-    channels_out: 512
-    kernel_size: 5
+    channels_out: 128
+    kernel_size: 7
+    fc_features: 1024
   
   training_params:
-    epochs: 500
-    batch_size: 128
+    epochs: 50
+    batch_size: 32
 

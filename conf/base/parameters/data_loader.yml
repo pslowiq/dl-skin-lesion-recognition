@@ -5,6 +5,7 @@
 # Link: https://kedro.readthedocs.io/en/0.18.5/kedro_project_setup/configuration.html#parameters
 
 loader_params:
-  image_size: [76, 76]
+  image_size: [96, 96]
   train_test_split: [0.8, 0.2]
   num_classes: 7
+  random_seed: 42

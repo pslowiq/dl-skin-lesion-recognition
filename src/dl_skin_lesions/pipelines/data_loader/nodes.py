@@ -34,7 +34,9 @@ def create_torch_dataset(images : PartitionedDataSet, csv : pd.DataFrame, loader
 def split_data(dataset : ImageDataset, loader_params):
 
     train_test_split = loader_params['train_test_split']
-    train_dataset, test_dataset = random_split(dataset, train_test_split, generator=torch.Generator().manual_seed(42))
+    seed = loader_params['random_seed']
+    generator = torch.Generator().manual_seed(seed)
+    train_dataset, test_dataset = random_split(dataset, train_test_split, generator=generator)
 
     train_weights = calculate_train_weights(train_dataset, loader_params['num_classes'])
 

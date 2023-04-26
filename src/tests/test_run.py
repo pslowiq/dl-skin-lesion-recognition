@@ -1,13 +1,3 @@
-"""
-This module contains an example test.
-
-Tests should be placed in ``src/tests``, in modules that mirror your
-project's structure, and in files named test_*.py. They are simply functions
-named ``test_*`` which test a unit of logic.
-
-To run the tests, run ``kedro test`` from the project root directory.
-"""
-
 from pathlib import Path
 
 import pytest
@@ -20,13 +10,20 @@ from kedro.framework.hooks import _create_hook_manager
 from dvc.api import DVCFileSystem
 import numpy as np
 
+
 @pytest.fixture
 def config_loader():
+    """
+    Tests if the configurations can be acquired from the source path.
+    """
     return ConfigLoader(conf_source=str(Path.cwd() / settings.CONF_SOURCE))
 
 
 @pytest.fixture
 def project_context(config_loader):
+    """
+    Tests if the full Kedro context loads properly.
+    """
     return KedroContext(
         package_name="dl_skin_lesions",
         project_path=Path.cwd(),

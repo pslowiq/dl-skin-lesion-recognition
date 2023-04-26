@@ -7,7 +7,7 @@ import torch
 from torch import nn
 from torch.optim import Adam
 from lightning import LightningModule
-from torchmetrics import Accuracy, Precision, ConfusionMatrix
+from torchmetrics import Accuracy
 
 class LesionDetector(LightningModule):
     def __init__(self, image_size, channels_out, kernel_size, fc_features, num_classes, learning_rate, training_weights):
@@ -15,8 +15,6 @@ class LesionDetector(LightningModule):
         self.learning_rate = learning_rate
         super().__init__()
         multiclass_accuracy = Accuracy(task="multiclass", num_classes=num_classes)
-        #multiclass_precision = Precision(task="multiclass", num_classes=num_classes)
-        #conf_matrix = ConfusionMatrix(task="multiclass", num_classes=num_classes)
 
         self.metrics = [multiclass_accuracy]
 

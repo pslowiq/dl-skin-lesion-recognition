@@ -2,17 +2,12 @@
 This is a boilerplate pipeline 'data_loader'
 generated using Kedro 0.18.5
 """
-from pathlib import Path
-from typing import Tuple
-import numpy as np
 import pandas as pd
 
-from kedro.framework.project import settings
-from kedro.config import ConfigLoader
 from kedro.io import PartitionedDataSet
 from dl_skin_lesions.extras.datasets.image_dataset import ImageDataset
 import torch
-from torch.utils.data import random_split, Dataset
+from torch.utils.data import random_split
 
 def calculate_train_weights(dataset, num_classes):
 

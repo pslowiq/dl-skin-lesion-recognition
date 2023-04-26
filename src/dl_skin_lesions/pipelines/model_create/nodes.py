@@ -85,8 +85,8 @@ class LesionDetector(LightningModule):
     def forward(self, x):
         """
         Returns output produced by model for input 'x' given in arguments.
-        The architecture of model are three simple convolutional layers with 
-        dropout and pooling. last layer does not have pooling and has Linear instead.
+        The architecture of model are two simple convolutional layers with 
+        dropout and pooling. last layer is a simple Linear with dropout.
         """
         x = self.ln1(x)
         x = self.conv1(x)

@@ -1,7 +1,3 @@
-"""
-This is a boilerplate pipeline 'data_loader'
-generated using Kedro 0.18.5
-"""
 import pandas as pd
 
 from kedro.io import PartitionedDataSet
@@ -10,7 +6,9 @@ import torch
 from torch.utils.data import random_split
 
 def calculate_train_weights(dataset, num_classes):
-
+    """
+    Returns training weights for all the classification labels.
+    """
     train_weights = {i : 0 for i in range(num_classes)}
 
     for _ , label in dataset:
@@ -22,12 +20,17 @@ def calculate_train_weights(dataset, num_classes):
     return [train_weights[i] for i in range(num_classes)]
 
 def create_torch_dataset(images : PartitionedDataSet, csv : pd.DataFrame, loader_params):
+    """
+    Returns custom torch-based dataset with images used as model inputs.
+    """
     dataset = ImageDataset(images, csv, image_size = loader_params['image_size'])
 
     return dataset
 
 def split_data(dataset : ImageDataset, loader_params):
-
+    """
+    Returns train and test datasets and training weights for every classification label.
+    """
     train_test_split = loader_params['train_test_split']
     seed = loader_params['random_seed']
     generator = torch.Generator().manual_seed(seed)

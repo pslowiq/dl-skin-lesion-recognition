@@ -1,8 +1,3 @@
-"""
-This is a boilerplate pipeline 'model_create'
-generated using Kedro 0.18.6
-"""
-
 import torch
 from torch import nn
 from torch.optim import Adam
@@ -10,6 +5,10 @@ from lightning import LightningModule
 from torchmetrics import Accuracy
 
 class LesionDetector(LightningModule):
+    """
+    Three-layered Convolutional Neural Network made for
+    skin lesion type classification.
+    """
     def __init__(self, image_size, channels_out, kernel_size, fc_features, num_classes, learning_rate, training_weights):
 
         self.learning_rate = learning_rate
@@ -42,7 +41,10 @@ class LesionDetector(LightningModule):
 
         self.save_hyperparameters()
 
-    def log_metrics(self, x, y, loss, prefix ):
+    def log_metrics(self, x, y, loss, prefix):
+        """
+        Returns nothing, logs metrics.
+        """
         for metric in self.metrics:
             metric.to(self.device)
             self.log(prefix + metric._get_name(), metric(x, y), on_step = False, on_epoch = True)
@@ -50,6 +52,9 @@ class LesionDetector(LightningModule):
 
 
     def training_step(self, batch, batch_idx):
+        """
+        Returns value of loss function for training batch given in arguments.
+        """
         x, y = batch
         x = self.forward(x)
         loss = nn.CrossEntropyLoss(weight = self.training_weights)(x,y)
@@ -59,10 +64,16 @@ class LesionDetector(LightningModule):
         return loss
     
     def on_train_epoch_start(self):
+        """
+        Returns nothing, initializes training weights of classification labels.
+        """
         self.training_weights = torch.tensor(self.class_weights, device = self.device)
         
     
     def validation_step(self, batch, batch_idx):
+        """
+        Returns value of loss function for validation batch given in arguments.
+        """
         x, y = batch
         x = self.forward(x)
         loss = nn.CrossEntropyLoss()(x,y)
@@ -72,6 +83,11 @@ class LesionDetector(LightningModule):
         return loss
     
     def forward(self, x):
+        """
+        Returns output produced by model for input 'x' given in arguments.
+        The architecture of model are three simple convolutional layers with 
+        dropout and pooling. last layer does not have pooling and has Linear instead.
+        """
         x = self.ln1(x)
         x = self.conv1(x)
         x = self.dropout1(x)
@@ -92,11 +108,17 @@ class LesionDetector(LightningModule):
 
 
     def configure_optimizers(self):
+        """
+        Returns configured optimizers for the model.
+        """
         optimizer = Adam(self.parameters(), lr=self.learning_rate)
         return optimizer
 
 
 def create_model(model_params, loader_params, train_weights):
+    """
+    Returns new LesionDetector model.
+    """
     create_params = model_params['create_params']
 
     return LesionDetector(loader_params['image_size'], create_params['channels_out'], create_params['kernel_size'], create_params['fc_features']

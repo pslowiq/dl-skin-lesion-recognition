@@ -53,7 +53,8 @@ wandb login
 kedro run --pipeline='model_train'
 ```
 
-9. Once training is complete, you can view the training metrics and visualizations by logging in to the WandB project.
+9. Once training is complete, you can view the training metrics and visualizations by logging in to the WandB project. 
+Sample report with metrics: https://api.wandb.ai/links/pslowiq/uz0u1s8i
 
 10. To create documentation, use the following command in the terminal:
 ```
@@ -75,3 +76,14 @@ dvc pull
 wandb login
 kedro run
 ```
+
+### Pipeline Visualization
+
+1. Type in terminal:
+```
+kedro viz
+```
+and enter localhost:4141 in browser.
+
+![image](https://user-images.githubusercontent.com/126721919/235999884-0041967c-2e4a-47dd-b449-c9598edf3105.png)
+
